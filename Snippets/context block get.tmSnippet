@@ -13,7 +13,7 @@ end</string>
 	<key>name</key>
 	<string>context block get</string>
 	<key>scope</key>
-	<string>source.ruby.rails.shoulda</string>
+	<string>source.ruby.rails</string>
 	<key>tabTrigger</key>
 	<string>contg</string>
 	<key>uuid</key>

@@ -46,6 +46,7 @@ class RubyMate < ScriptMate
             url, display_name = '', 'untitled document';
             unless file == "-"
               indent += " " if file.sub!(/^\[/, "")
+              file = File.join(ENV['TM_PROJECT_DIRECTORY'], file) unless file =~ /^\//
               url = '&amp;url=file://' + e_url(file)
               display_name = File.basename(file)
             end
@@ -54,7 +55,8 @@ class RubyMate < ScriptMate
             "</a> in <strong>#{CGI::escapeHTML display_name}</strong> at line #{line}<br/>"
           elsif line =~ /([\w\_]+).*\[([\w\_\/\.]+)\:(\d+)\]/
             method, file, line = $1, $2, $3
-            "<span><a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{method}</span>:#{line}<br/>"
+            file = File.join(ENV['TM_PROJECT_DIRECTORY'], file) unless file =~ /^\//
+            "<a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{File.basename(file)}:#{line}</a><br/>"
           elsif line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors/
             "<span style=\"color: #{$1 + $2 == "00" ? "green" : "red"}\">#{$&}</span><br/>"
           else

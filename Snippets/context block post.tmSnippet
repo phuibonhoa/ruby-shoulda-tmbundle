@@ -14,7 +14,7 @@ end
 	<key>name</key>
 	<string>context block post</string>
 	<key>scope</key>
-	<string>source.ruby.rails.shoulda</string>
+	<string>source.ruby.rails</string>
 	<key>tabTrigger</key>
 	<string>contp</string>
 	<key>uuid</key>

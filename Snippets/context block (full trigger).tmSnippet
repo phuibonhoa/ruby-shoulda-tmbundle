@@ -3,16 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>should "${1:description}" do
+	<string>context "${1:description}" do
   $0
-end</string>
+end
+</string>
 	<key>name</key>
-	<string>should block</string>
+	<string>context block (full trigger)</string>
 	<key>scope</key>
-	<string>source.ruby.rails.shoulda</string>
+	<string>source.ruby</string>
 	<key>tabTrigger</key>
-	<string>sh</string>
+	<string>context</string>
 	<key>uuid</key>
-	<string>D8AB6BAF-153A-4134-9A46-B1273943F16D</string>
+	<string>A06B8E47-E739-40D2-A4E1-BADD35580C1D</string>
 </dict>
 </plist>

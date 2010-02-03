@@ -7,12 +7,12 @@
   $0
 end</string>
 	<key>name</key>
-	<string>should block</string>
+	<string>should block (full trigger)</string>
 	<key>scope</key>
 	<string>source.ruby.rails.shoulda</string>
 	<key>tabTrigger</key>
-	<string>sh</string>
+	<string>should</string>
 	<key>uuid</key>
-	<string>D8AB6BAF-153A-4134-9A46-B1273943F16D</string>
+	<string>2596E125-83B0-4DD3-A260-6B9ACD0355BB</string>
 </dict>
 </plist>

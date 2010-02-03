@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>name</key>
 	<string>Symbol List: Context</string>
 	<key>scope</key>
-	<string>meta.context.ruby.shoulda</string>
+	<string>meta.context.ruby.rails.shoulda</string>
 	<key>settings</key>
 	<dict>
 		<key>showInSymbolList</key>

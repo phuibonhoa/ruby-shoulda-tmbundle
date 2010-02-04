@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>should_assign_to :${1:name}${2:${3:, :class =&gt; ${4:Model}}${5:, :equals =&gt; '${6:@$1}'}}</string>
+	<string>should_assign_to(:${1:name}) ${3:{ ${2:value} \}} $0</string>
 	<key>name</key>
 	<string>should_assign_to</string>
 	<key>scope</key>
 	<string>source.ruby.rails.shoulda</string>
 	<key>tabTrigger</key>
-	<string>sha</string>
+	<string>ssa</string>
 	<key>uuid</key>
-	<string>1FB69312-1897-4A64-A7E8-F7B699F871B1</string>
+	<string>0B156E47-B623-44D9-9BE9-6CFBBB32ED82</string>
 </dict>
 </plist>

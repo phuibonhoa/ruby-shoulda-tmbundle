@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>#{${1:$TM_SELECTED_TEXT}}</string>
+	<key>keyEquivalent</key>
+	<string>#</string>
+	<key>name</key>
+	<string>#{}</string>
+	<key>scope</key>
+	<string>entity.name.function.ruby.rails.shoulda</string>
+	<key>tabTrigger</key>
+	<string>#</string>
+	<key>uuid</key>
+	<string>8EB74571-5583-4930-A5F1-7FC1F60481F9</string>
+</dict>
+</plist>

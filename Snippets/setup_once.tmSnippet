@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>setup do
+	<string>setup_once do
   $0
 end</string>
 	<key>name</key>
-	<string>setup (full trigger)</string>
+	<string>setup_once</string>
 	<key>scope</key>
 	<string>source.ruby.rails.shoulda</string>
 	<key>tabTrigger</key>
-	<string>setup</string>
+	<string>seto</string>
 	<key>uuid</key>
-	<string>645882B7-2BA1-4574-B268-C72716FEF111</string>
+	<string>C5925DEC-3039-4449-A469-66A219C526D0</string>
 </dict>
 </plist>

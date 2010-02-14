@@ -24,7 +24,7 @@ File.open(ENV['TM_FILEPATH']) do |f|
   should    = parse_from_quotes(lines.find { |line| line =~ /^\s*should\b/ })
 end
 
-if !context.empty? &amp;&amp; !should.empty?
+if !context.empty?
   puts "shoulda"
   context = parse_from_quotes( context )
   name = "#{context}".gsub(/[\+\.\s\'\"\(\)]/,'.')

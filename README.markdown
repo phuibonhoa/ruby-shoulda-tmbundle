@@ -31,6 +31,4 @@ My bundles work best when use in conjunction with my other bundles:
 
 By [Philippe Huibonhoa](http://github.com/phuibonhoa)
 
-Original bundle can be found [here](http://github.com/aussiegeek/ruby-sass-tmbundle)
-
-Sass versions of css snippets pulled from James Conroy-Finn
+Original bundle can be found [here](http://github.com/drnic/ruby-shoulda-tmbundle)

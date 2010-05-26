@@ -3,11 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>fileTypes</key>
-	<array>
-		<string>rb</string>
-		<string>rxml</string>
-		<string>builder</string>
-	</array>
+	<array/>
 	<key>foldingStartMarker</key>
 	<string>(?x)^
 	    (\s*+

@@ -5,8 +5,7 @@
 	<key>content</key>
 	<string>context "${1:description}" do
   $0
-end
-</string>
+end</string>
 	<key>name</key>
 	<string>context block</string>
 	<key>scope</key>

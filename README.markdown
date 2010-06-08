@@ -13,7 +13,7 @@ Please Note: If you use my Rails bundle, you do not have to set Shoulda as the a
 ##Installation
 
 1. $ `cd ~/Library/Application\ Support/TextMate/Bundles/`
-2. $ `git clone git://github.com/handcrafted/handcrafted-haml-textmate-bundle.git Haml.tmbundle`
+2. $ `git clone git://github.com/phuibonhoa/ruby-shoulda-tmbundle.git Shoulda.tmbundle`
 3. $ `osascript -e 'tell app "TextMate" to reload bundles'`
  
 ##My Other Textmate Bundles

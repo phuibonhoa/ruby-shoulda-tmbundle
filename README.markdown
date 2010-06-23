@@ -15,7 +15,9 @@ Please Note: If you use my Rails bundle, you do not have to set Shoulda as the a
 1. $ `cd ~/Library/Application\ Support/TextMate/Bundles/`
 2. $ `git clone git://github.com/phuibonhoa/ruby-shoulda-tmbundle.git Shoulda.tmbundle`
 3. $ `osascript -e 'tell app "TextMate" to reload bundles'`
- 
+
+If you'd like to install all my bundles, check out this [script](http://gist.github.com/443129) written by [mkdynamic](http://github.com/mkdynamic).  It installs all bundles and backups any existing bundles with conflicting names.  Thanks Mark!
+
 ##My Other Textmate Bundles
 My bundles work best when use in conjunction with my other bundles:
 

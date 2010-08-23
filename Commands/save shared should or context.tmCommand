@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby -w
+input = STDIN.read
+
+if input =~ /shared_should/i or input =~ /shared_context/
+	out = input.sub('x_shared_should', '').sub('shared_should', '').sub('shared_context', '')
+	out = out.sub(/\s*do\s*$/, '')
+	out = out.gsub(/[^\w_\s]/, '')
+	out = out.squeeze('_ 	').strip
+	out = out.gsub(/\s/, '_')
+	if input =~ /x_shared_should/i
+	  out = "should_#{out}"
+	else
+	  out = "should_be_#{out}"
+	end
+
+	File.open(File.join(ENV['TM_BUNDLE_SUPPORT'],'shared_should_context_name.txt'), 'w') do |file|
+		file &lt;&lt; out
+	end
+	puts "Stored #{out}"
+else
+  puts "No shared should or context found!"
+end
+
+</string>
+	<key>fallbackInput</key>
+	<string>line</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>^@s</string>
+	<key>name</key>
+	<string>save shared should or context</string>
+	<key>output</key>
+	<string>showAsTooltip</string>
+	<key>scope</key>
+	<string>source.ruby.rails.shoulda</string>
+	<key>uuid</key>
+	<string>262D3CA7-6118-4227-9A83-1B1935A0BC5F</string>
+</dict>
+</plist>

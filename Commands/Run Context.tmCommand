@@ -27,7 +27,7 @@ end
 if !context.empty?
   puts "shoulda"
   context = parse_from_quotes( context )
-  name = "#{context}".gsub(/[\+\.\s\'\"\(\)]/,'.')
+  name = "#{context}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.')
   print "--name=/#{name}/ -v v"  
 end
 

@@ -15,7 +15,7 @@ if input =~ /shared_should/i or input =~ /shared_context/
 	out = out.squeeze('_ 	').strip
 	out = out.gsub(/\s/, '_')
 	if input =~ /x_shared_should/i
-	  out = "should_#{out}"
+	  out = "x_should_#{out}"
 	else
 	  out = "should_be_#{out}"
 	end

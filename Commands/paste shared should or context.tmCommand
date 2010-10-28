@@ -9,9 +9,9 @@
 
 lines = File.readlines(File.join(ENV['TM_BUNDLE_SUPPORT'],'shared_should_context_name.txt'))
 
-puts "#{lines.first}${2:(\"${1:description}\")} do
+print "#{lines.first}${2:(\"${1:description}\") do
   $0
-end"</string>
+end}"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>

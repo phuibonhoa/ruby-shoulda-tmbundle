@@ -58,7 +58,7 @@ def format_output(string)
     test_duration = result[7]
     
     out = "&nbsp;&nbsp;#{format_test_result(test_result)}&nbsp;&nbsp;#{format_test_name(test_name, test_result)}:&nbsp;(#{test_duration})<br/>"
-    out << %Q!<div style="background-color:#DFDFDF; padding: 10px">#{htmlize(test_puts)}</div>! unless test_puts.strip.empty?
+    out << %Q!<div style="background-color:#E6E6E6; padding: 5px 10px">#{htmlize(test_puts)}</div>! unless test_puts.strip.empty?
   end
   
   out

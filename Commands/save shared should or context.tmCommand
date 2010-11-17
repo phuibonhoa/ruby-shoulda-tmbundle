@@ -9,13 +9,13 @@
 input = STDIN.read
 
 if input =~ /shared_should/i or input =~ /shared_context/
-	out = input.sub('x_shared_should', '').sub('shared_should', '').sub('shared_context', '')
+	out = input.sub('shared_should', '').sub('shared_context', '')
 	out = out.sub(/\s*do\s*$/, '')
 	out = out.gsub(/[^\w_\s]/, '')
 	out = out.squeeze('_ 	').strip
 	out = out.gsub(/\s/, '_')
-	if input =~ /x_shared_should/i
-	  out = "x_should_#{out}"
+	if input =~ /shared_should/i
+	  out = "should_#{out}"
 	else
 	  out = "should_be_#{out}"
 	end

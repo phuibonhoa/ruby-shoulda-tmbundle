@@ -94,7 +94,7 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV
             url, display_name = '', 'untitled document';
             unless file == "-"
               indent += " " if file.sub!(/^\[/, "")
-              file = File.join(ENV['TM_PROJECT_DIRECTORY'], file) unless file =~ /^\//
+              file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
               url = '&amp;url=file://' + e_url(file)
               display_name = File.basename(file)
             end
@@ -108,11 +108,11 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV
             htmlize(test_header.chomp) + "<br/><br style=\"display: none\"/>" + htmlize(test_output) + "<br/><br style=\"display: none\"/>"
           elsif line =~ /(\[[^\]]+\]\([^)]+\))\s+\[([\w\_\/\.]+)\:(\d+)\]/
             spec, file, line = $1, $2, $3, $4
-            file = File.join(ENV['TM_PROJECT_DIRECTORY'], file) unless file =~ /^\//
+            file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
             "<a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{spec}</a>:#{line}<br/>"
           elsif line =~ /(.*?:)?([\w\_ ]+).*\[([\w\_\/\.]+)\:(\d+)\]/
             method, file, line = $2, $3, $4
-            file = File.join(ENV['TM_PROJECT_DIRECTORY'], file) unless file =~ /^\//
+            file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
             "<a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{File.basename(file)}</a>:#{line}<br/>"
           elsif line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors\b.*/
             "<span style=\"color: #{$1 + $2 == "00" ? "green" : "red"}\">#{$&}</span><br/>"

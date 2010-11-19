@@ -18,21 +18,45 @@ def parse_from_quotes(name)
   name.to_s.gsub(/^(?:.*"(.*)"|.*'(.*)').*$/) { $1 || $2 }
 end
 
-n = ENV['TM_LINE_NUMBER'].to_i
-
-should, context = nil, nil
-
-File.open(ENV['TM_FILEPATH']) do |f|
-  lines     = f.read.split("\n")[0...n].reverse
-  context   = lines.find { |line| line =~ /^\s*context\b/ }
-  should    = parse_from_quotes(lines.find { |line| line =~ /^\s*should\b/ })
+def parse_should_from_quotes(name)
+  should_name_parts = []
+    
+  should_name_parts &lt;&lt; parse_from_quotes(name)
+  if name =~ /^\s*should_/
+    should_name_parts &lt;&lt; name.to_s.gsub(/.*(should_[\w_]+).*/, '\1').gsub("_", ' ')
+  else
+    should_name_parts.unshift('should')
+  end
+  
+  return should_name_parts.join(" ")
 end
 
-if !context.empty? &amp;&amp; !should.empty?
+def indentation_level(line)
+  if match = line.match(/(\s*)\w/)
+    match[1].size
+  else
+    0
+  end
+end
+
+n = ENV['TM_LINE_NUMBER'].to_i
+
+should_line = ''
+lines = nil
+File.open(ENV['TM_FILEPATH']) do |f|
+  lines     = f.read.split("\n")[0...n].reverse
+  should_line = lines.detect { |line| line =~ /^\s*should/ }
+end
+
+if !should_line.empty?
   puts "shoulda"
-  context = parse_from_quotes( context )
-  name = "#{context} should #{should}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.')
-  print "--name=/#{name}/ -v v"  
+  
+  should = parse_should_from_quotes(should_line)
+  indentation_level_of_should = indentation_level(should_line)
+  context_line = lines.detect { |line| line =~ /^\s*context\b/ and indentation_level(line) &lt; indentation_level_of_should }
+  context = parse_from_quotes(context_line)
+  name = "#{context} #{should}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.')
+  print "--name=/#{name}/ -v v"
 end
 
 EOF)

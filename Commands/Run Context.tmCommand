@@ -14,19 +14,38 @@ def parse_from_quotes(name)
   name.to_s.gsub(/^(?:.*"(.*)"|.*'(.*)').*$/) { $1 || $2 }
 end
 
+def indentation_level(line)
+  if match = line.match(/(\s*)\w/)
+    match[1].size
+  else
+    0
+  end
+end
+
 n = ENV['TM_LINE_NUMBER'].to_i
 
-should, context = nil, nil
+context_line = ''
+should_line = ''
+lines = nil
 
 File.open(ENV['TM_FILEPATH']) do |f|
   lines     = f.read.split("\n")[0...n].reverse
-  context   = lines.find { |line| line =~ /^\s*context\b/ }
-  should    = parse_from_quotes(lines.find { |line| line =~ /^\s*should\b/ })
+  reference_line = lines.detect { |line| line =~ /^\s*(context)|(should)/ }
+  if reference_line =~ /^\s*context/
+    context_line = reference_line
+  else
+    should_line = reference_line
+  end
 end
 
-if !context.empty?
+if !should_line.empty?  
+  indentation_level_of_should = indentation_level(should_line)
+  context_line = lines.detect { |line| line =~ /^\s*context\b/ and indentation_level(line) &lt; indentation_level_of_should }
+end
+
+if !context_line.empty?
   puts "shoulda"
-  context = parse_from_quotes( context )
+  context = parse_from_quotes( context_line )
   name = "#{context}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.')
   print "--name=/#{name}/ -v v"  
 end

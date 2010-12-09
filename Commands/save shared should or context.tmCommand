@@ -10,7 +10,7 @@ input = STDIN.read
 
 if input =~ /shared_should/i or input =~ /shared_context_should/
 	out = input.sub('shared_should', '').sub('shared_context_should', '')
-	out = out.sub(/\s*do\s*$/, '')
+	out = out.sub(/\s*do\s*(|.*|)?\s*$/, '')
 	out = out.gsub(/[^\w_\s]/, '')
 	out = out.squeeze('_ 	').strip
 	out = out.gsub(/\s/, '_')

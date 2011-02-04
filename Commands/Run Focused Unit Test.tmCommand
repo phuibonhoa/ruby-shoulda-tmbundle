@@ -22,8 +22,17 @@ def parse_should_from_quotes(name)
   should_name_parts = []
     
   should_name_parts &lt;&lt; parse_from_quotes(name)
-  if name =~ /^\s*should_/
-    should_name_parts &lt;&lt; name.to_s.gsub(/.*(should_[\w_]+).*/, '\1').gsub("_", ' ')
+  if name =~ /^\s*should_be/    
+    result = should_be_part = when_part = nil
+    should_be_part = result[1] if result = name.match(/.*should_be\(?\s*"(.*?)"\)?.*/) || name.match(/.*should_be\(?\s*'(.*?)'\)?.*/) #weird error when trying to match (["']) with \1 in match, so have to do this wet double match
+    when_part = result[1] if result = name.match(/.*when\(?\s*"(.*?)"\)?.*/) || name.match(/.*when\(?\s*'(.*?)'\)?.*/)
+    should_name_parts.push('when', when_part) if when_part
+    should_name_parts.push('should be', should_be_part) if should_be_part
+    should_name_parts.shift    
+
+  elsif name =~ /^\s*should_/
+    should_name_parts &lt;&lt; name.to_s.gsub(/.*(should_[\w_]+).*/, '\1').gsub("_", ' ').gsub("should", "should( be)?")
+    
   else
     should_name_parts.unshift('should')
   end
@@ -55,7 +64,7 @@ if !should_line.empty?
   indentation_level_of_should = indentation_level(should_line)
   context_line = lines.detect { |line| line =~ /^\s*context\b/ and indentation_level(line) &lt; indentation_level_of_should }
   context = parse_from_quotes(context_line)
-  name = "#{context} #{should}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.')
+  name = "#{context} #{should}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.?')
   print "--name=/#{name}/ -v v"
 end
 

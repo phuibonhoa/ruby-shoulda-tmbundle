@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>shared_should_for "${1:description}" do
+	<string>shared_should_be "${1:description}" do
   $0
 end</string>
 	<key>name</key>

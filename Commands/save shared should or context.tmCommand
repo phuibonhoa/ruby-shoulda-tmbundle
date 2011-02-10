@@ -8,7 +8,7 @@
 	<string>#!/usr/bin/env ruby -w
 input = STDIN.read
 
-if input =~ /shared_should_for/i or input =~ /shared_context_for/
+if input =~ /shared_should_be/i or input =~ /shared_context_for/
 	out = input.sub(/shared_should_be\s*/, '').sub(/shared_context_for\s*/, '')
 	out = out.sub(/\s*do\s*(|.*|)?\s*$/, '')
 	out.strip!

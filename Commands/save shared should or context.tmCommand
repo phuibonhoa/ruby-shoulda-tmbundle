@@ -12,7 +12,8 @@ keywords = %w[should context setup]
 
 if match = input.match(/share_(#{keywords.join("|")})/)
   keyword = match[1]
-	out = input.gsub(/share_#{keywords.join("|")}\s*/, '')
+  
+	out = input.gsub(/share_(#{keywords.join("|")})\s*/, '')
 	out = out.sub(/\s*do\s*(|.*|)?\s*$/, '')
 	out.strip!
 	out = out[1..-2] if out =~ /^\(.*\)$/

@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>share_context "${1:description}" do
+	<string>share_should "${1:description}" do
   $0
 end</string>
 	<key>name</key>
-	<string>share_context</string>
+	<string>share_should (ssh)</string>
 	<key>scope</key>
 	<string>source.ruby.rails.shoulda</string>
 	<key>tabTrigger</key>
-	<string>sc</string>
+	<string>ssh</string>
 	<key>uuid</key>
-	<string>BF91B0C2-E5FD-4AB1-8EB8-4124E078D23F</string>
+	<string>DA850AA1-4448-4791-BD2E-3599C64328B6</string>
 </dict>
 </plist>

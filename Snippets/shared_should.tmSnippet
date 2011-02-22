@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>shared_should_be "${1:description}" do
+	<string>share_should "${1:description}" do
   $0
 end</string>
 	<key>name</key>
-	<string>shared_should</string>
+	<string>share_should</string>
 	<key>scope</key>
 	<string>source.ruby.rails.shoulda</string>
 	<key>tabTrigger</key>

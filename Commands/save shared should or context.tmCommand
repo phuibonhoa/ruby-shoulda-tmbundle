@@ -8,12 +8,15 @@
 	<string>#!/usr/bin/env ruby -w
 input = STDIN.read
 
-if input =~ /shared_should_be/i or input =~ /shared_context_for/
-	out = input.sub(/shared_should_be\s*/, '').sub(/shared_context_for\s*/, '')
+keywords = %w[should context setup]
+
+if match = input.match(/share_(#{keywords.join("|")})/)
+  keyword = match[1]
+	out = input.gsub(/share_#{keywords.join("|")}\s*/, '')
 	out = out.sub(/\s*do\s*(|.*|)?\s*$/, '')
 	out.strip!
 	out = out[1..-2] if out =~ /^\(.*\)$/
-	out = "should_be(#{out})"
+	out = "use_#{keyword}(#{out})"
 
 	File.open(File.join(ENV['TM_BUNDLE_SUPPORT'],'shared_should_context_name.txt'), 'w') do |file|
 		file &lt;&lt; out

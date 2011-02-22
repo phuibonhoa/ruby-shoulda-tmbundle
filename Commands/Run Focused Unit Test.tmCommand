@@ -22,17 +22,20 @@ def parse_should_from_quotes(name)
   should_name_parts = []
     
   should_name_parts &lt;&lt; parse_from_quotes(name)
-  if name =~ /^\s*should_be/    
-    result = should_be_part = when_part = nil
-    should_be_part = result[1] if result = name.match(/.*should_be\(?\s*"(.*?)"\)?.*/) || name.match(/.*should_be\(?\s*'(.*?)'\)?.*/) #weird error when trying to match (["']) with \1 in match, so have to do this wet double match
+  if name =~ /^\s*use_should/    
+    result = should_be_part = when_part = with_part = nil
+    should_be_part = result[1] if result = name.match(/.*use_should\(?\s*"(.*?)"\)?.*/) || name.match(/.*use_should\(?\s*'(.*?)'\)?.*/) #weird error when trying to match (["']) with \1 in match, so have to do this wet double match
     when_part = result[1] if result = name.match(/.*when\(?\s*"(.*?)"\)?.*/) || name.match(/.*when\(?\s*'(.*?)'\)?.*/)
+    with_part = result[1] if result = name.match(/.*with\(?\s*"(.*?)"\)?.*/) || name.match(/.*with\(?\s*'(.*?)'\)?.*/)
     should_name_parts.push('when', when_part) if when_part
-    should_name_parts.push('should be', should_be_part) if should_be_part
-    should_name_parts.shift    
+    should_name_parts.push('with', with_part) if with_part
+    should_name_parts.push('should', should_be_part) if should_be_part
+    should_name_parts.shift
 
   elsif name =~ /^\s*should_/
-    should_name_parts &lt;&lt; name.to_s.gsub(/.*(should_[\w_]+).*/, '\1').gsub("_", ' ').gsub("should", "should( be)?")
-    
+    should_name_parts &lt;&lt; name.to_s.gsub(/.*(should_[\w_]+).*/, '\1').gsub("_", ' ')
+    should_name_parts[-1].gsub!("should", "should( be)?") if name =~ /^\s*should_be/
+
   else
     should_name_parts.unshift('should')
   end
@@ -54,7 +57,7 @@ should_line = ''
 lines = nil
 File.open(ENV['TM_FILEPATH']) do |f|
   lines     = f.read.split("\n")[0...n].reverse
-  should_line = lines.detect { |line| line =~ /^\s*should/ }
+  should_line = lines.detect { |line| line =~ /^\s*(use_)?should/ }
 end
 
 if !should_line.empty?

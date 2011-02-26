@@ -7,13 +7,13 @@ Please Note: If you use my Rails bundle, you do not have to set Shoulda as the a
 
 ####Changes
  * Support for [Shared Should](http://github.com/michaelgpearce/shared_should) an awesome extension to shoulda for DRYing your tests
-   * _ss_, _ssh_ for _share\_should_ snippet
-   * _sc_, _scon_ for _share\_context_ snippet
-   * _sset_ for _share\_setup__ snippet
-   * ⌃⌘+S  -  Save share_should, share_context, share_setup  (cursor should be in line of defined shared_xxx)
-   * ⌃⇧⌘+S  -  Output use_should, use_context, use_setup based on last saved item
+   * _ss_, _ssh_ for _share\_should_ snippet and _us_ for _use\_should_
+   * _sc_, _scon_ for _share\_context_ snippet and _uc_ for _use\_context_
+   * _sset_ for _share\_setup_ snippet and _uset_ for _use\_setup_
+   * ⌃⌘+S  -  Save share\_should, share\_context, share\_setup  (cursor should be in line of defined shared_xxx)
+   * ⌃⇧⌘+S  -  Output use\_should, use\_context, use\_setup based on last saved item
  * Updated the 'Go To Symbol' so it reads just like test output
-   * For shared_shoulds this means you can type when ... should ... (as you would read in the test output) in the ⇧⌘+T menu
+   * For shared\_shoulds this means you can type when ... should ... (as you would read in the test output) in the ⇧⌘+T menu
  * Added more snippets for context, should, etc.
  * Improved support for running individual shoulds and contexts inside Textmate
  * Context name has the same syntax coloring as method definitions (better readability)

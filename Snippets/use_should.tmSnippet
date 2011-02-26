@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>use_should("${1:shared_should name}")${3:.when("${2:condition}")} do
+  $0
+end</string>
+	<key>name</key>
+	<string>use_should</string>
+	<key>scope</key>
+	<string>source.ruby.rails.shoulda</string>
+	<key>tabTrigger</key>
+	<string>us</string>
+	<key>uuid</key>
+	<string>EC4FDD01-8E00-4BDD-8630-7B27639ACA30</string>
+</dict>
+</plist>

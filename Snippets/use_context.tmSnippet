@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>use_context("${1:shared_context name}")${3:.when("${2:condition}")} do
+  $0
+end</string>
+	<key>name</key>
+	<string>use_context</string>
+	<key>scope</key>
+	<string>source.ruby.rails.shoulda</string>
+	<key>tabTrigger</key>
+	<string>uc</string>
+	<key>uuid</key>
+	<string>DBD01F4D-EEC2-4CA4-9C23-30BF0FC9D914</string>
+</dict>
+</plist>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>use_context("${1:shared_context name}")${3:.when("${2:condition}")} do
+	<string>use_context("${1:shared_context name}")${3:.when("${2:condition}") do
   $0
-end</string>
+end}</string>
 	<key>name</key>
 	<string>use_context</string>
 	<key>scope</key>

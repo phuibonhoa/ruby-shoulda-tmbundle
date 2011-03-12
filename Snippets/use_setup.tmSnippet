@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>use_setup("${1:shared_setup name}")${3:.when("${2:condition}")} do
+	<string>use_setup("${1:shared_setup name}")${3:.when("${2:condition}") do
   $0
-end</string>
+end}</string>
 	<key>name</key>
 	<string>use_setup</string>
 	<key>scope</key>

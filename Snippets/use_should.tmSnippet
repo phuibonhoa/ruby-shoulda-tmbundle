@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>use_should("${1:shared_should name}")${3:.when("${2:condition}")} do
+	<string>use_should("${1:shared_should name}")${3:.when("${2:condition}") do
   $0
-end</string>
+end}</string>
 	<key>name</key>
 	<string>use_should</string>
 	<key>scope</key>

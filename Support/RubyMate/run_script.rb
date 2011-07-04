@@ -36,7 +36,7 @@ def end_of_test?(line)
 end
 
 def last_line?(line)
-  !!(line =~ /\d+% passed/)
+  !!(line =~ /tests.*assertions.*failures.*errors/)
 end
 
 #test: .bulk_shipment_items distributor_return should include ship_to_distributors. :.: (0.200692)
@@ -47,17 +47,47 @@ end
 # 5:".:"  --  throw away
 # 6:"."  --  test result . or E or F
 # 7:"0.200692"  --  duration
-def format_output(string)
+def test_parts_with_duration(string)
   result = string.match(/\A\s*(test:\s*)(.*?)(\.\s*:)(.*)(([.EF]):)\s*\(([\d.]+)\)\s*\z/m)
+  
   if result.nil?
+    nil
+  else
+    [result[2], result[4].sub(/^\s+/, ''), result[6], result[7]]
+  end
+end
+
+# str = "test: schema should truth. (RedemptionTest): .\n" A 
+# 1:"test: "  --  throw away
+# 2:"schema should truth. (RedemptionTest)"  --  test name
+# 3:":"  --  throw away
+# 4:""  --  any puts in the test
+# 5:"."  --  test result . or E or F
+def test_parts_without_duration(string)
+  result = string.match(/\A\s*(test:\s*)(.*?)(\.\s*:)(.*)([.EF])\s*\z/m)
+  
+  if result.nil?
+    nil
+  else
+    [result[2], result[4], result[5], nil]
+  end
+end
+
+# str = "test: schema should truth. (RedemptionTest): .\n" A 
+# str = " test: schema should truth. :\t\t\t\tdebug\n" A 
+def format_output(string)
+  test_name, test_puts, test_result, test_duration = if string =~ /(([.EF]):)\s*\(([\d.]+)\)\s*\z/m
+    test_parts_with_duration(string)
+  else
+    test_parts_without_duration(string)
+  end
+  
+  if test_name.nil?
     out = htmlize(string)
   else
-    test_name = result[2]
-    test_puts = result[4]
-    test_result = result[6]
-    test_duration = result[7]
-    
-    out = "&nbsp;&nbsp;#{format_test_result(test_result)}&nbsp;&nbsp;#{format_test_name(test_name, test_result)}:&nbsp;(#{test_duration})<br/>"
+    out = "&nbsp;&nbsp;#{format_test_result(test_result)}&nbsp;&nbsp;#{format_test_name(test_name, test_result)}"
+    out << ":&nbsp;(#{test_duration})" if test_duration
+    out << "<br/>"
     out << %Q!<div style="background-color:#E6E6E6; padding: 5px 10px">#{htmlize(test_puts)}</div>! unless test_puts.strip.empty?
   end
   
@@ -78,7 +108,7 @@ test_script_buffer = ''
 test_script_output = ''
 past_test_run = false #set to true once tests have been completed and now printing the errors/failures
 
-TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV) do |str, type|
+TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV) do |str, type|  
   case type
   when :out
     if is_test_script and str =~ /\A[.EF]+\Z/

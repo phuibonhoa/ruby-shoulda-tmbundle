@@ -1,3 +1,4 @@
+require 'drb/drb'
 require ENV["TM_SUPPORT_PATH"] + "/lib/tm/executor"
 require ENV["TM_SUPPORT_PATH"] + "/lib/tm/save_current_document"
 
@@ -6,7 +7,24 @@ TextMate.save_current_document
 is_test_script = ENV["TM_FILEPATH"] =~ /(?:\b|_)(?:tc|ts|test)(?:\b|_)/ or
   File.read(ENV["TM_FILEPATH"]) =~ /\brequire\b.+(?:test\/unit|test_helper)/
 
-cmd = [ENV['TM_RUBY'] || 'ruby', '-rcatch_exception']
+SPORK_SERVER_URI="druby://localhost:#{ENV["SPORK_PORT"] || 8988}"
+
+def spork?
+  # return false
+  @spork ||= lambda{
+    return false if ENV['SPORK_TESTUNIT'].nil?
+    begin
+      spork_server = DRbObject.new_with_uri(SPORK_SERVER_URI)
+      if spork_server.respond_to?(:run)
+        return true
+      end
+    rescue Exception => e
+      return false
+    end
+  }.call
+end
+
+cmd = spork? ? ['testdrb'] : [ENV['TM_RUBY'] || 'ruby', '-rcatch_exception']
 
 if is_test_script and not ENV['TM_FILE_IS_UNTITLED']
   path_ary = (ENV['TM_ORIG_FILEPATH'] || ENV['TM_FILEPATH']).split("/")
@@ -23,6 +41,13 @@ if is_test_script and not ENV['TM_FILE_IS_UNTITLED']
       cmd << "-I#{lib_path}:#{test_path}:#{test_parent_path}" if File.exist? lib_path
     end
   end
+end
+
+if spork?
+  cmd << "-n#{ARGV[1].gsub(/--name=/, '')}"
+  script_args = []
+else
+  script_args = ARGV
 end
 
 cmd << ENV["TM_FILEPATH"]
@@ -108,7 +133,7 @@ test_script_buffer = ''
 test_script_output = ''
 past_test_run = false #set to true once tests have been completed and now printing the errors/failures
 
-TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV) do |str, type|  
+TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => script_args) do |str, type|  
   case type
   when :out
     if is_test_script and str =~ /\A[.EF]+\Z/
@@ -118,7 +143,7 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV
         if (test_script_buffer.empty? and !start_of_test?(line)) or past_test_run
           line.sub!("\n", " ") if line =~ /Started/
           past_test_run = true if line =~ /\s+\d+\) (Error|Failure)/
-          
+
           test_script_output << if line =~ /^(\s+)(\S.*?):(\d+)(?::in\s*`(.*?)')?/
             indent, file, line, method = $1, $2, $3, $4
             url, display_name = '', 'untitled document';
@@ -149,7 +174,7 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV
           else
             htmlize(line)
           end
-          
+
         else
           test_script_buffer << line
           if end_of_test?(line)
@@ -157,14 +182,14 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => ARGV
             test_script_buffer = ''
           end
         end
-      
+
         if last_line?(line)
           test_script_output
         else
           ''
         end
       end
-      
+
       out.join
     else
       htmlize(str)

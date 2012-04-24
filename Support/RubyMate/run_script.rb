@@ -139,58 +139,25 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => scri
     if is_test_script and str =~ /\A[.EF]+\Z/
       format_test_result(htmlize(str)) + "<br style=\"display: none\"/>"
     elsif is_test_script
-      out = [str].flatten.map do |line|
-        if (test_script_buffer.empty? and !start_of_test?(line)) or past_test_run
-          line.sub!("\n", " ") if line =~ /Started/
-          past_test_run = true if line =~ /\s+\d+\) (Error|Failure)/
-
-          test_script_output << if line =~ /^(\s+)(\S.*?):(\d+)(?::in\s*`(.*?)')?/
-            indent, file, line, method = $1, $2, $3, $4
-            url, display_name = '', 'untitled document';
-            unless file == "-"
-              indent += " " if file.sub!(/^\[/, "")
-              file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
-              url = '&amp;url=file://' + e_url(file)
-              display_name = File.basename(file)
-            end
-            "#{indent}<a class='near' href='txmt://open?line=#{line + url}'>" +
-            (method ? "method #{CGI::escapeHTML method}" : '<em>at top level</em>') +
-            "</a> in <strong>#{CGI::escapeHTML display_name}</strong> at line #{line}<br/>"
-          elsif line =~ /\A\s*test:.*?\.\s*\(.*?\):\s*[.EF]\n?\Z/
-            htmlize(line.chomp).gsub(/([EF])\Z/, "<span style=\"color: red\">\\1</span>").gsub(/(\.)\Z/, "<span style=\"color: green\">\\1</span>") + "<br/><br style=\"display: none\"/>"
-          elsif line =~ /\A\s*(test:.*?\.\s*\(.*?\):\s*)(.*)\Z/m
-            test_header, test_output = $1, $2
-            htmlize(test_header.chomp) + "<br/><br style=\"display: none\"/>" + htmlize(test_output) + "<br/><br style=\"display: none\"/>"
-          elsif line =~ /(\[[^\]]+\]\([^)]+\))\s+\[([\w\_\/\.]+)\:(\d+)\]/
-            spec, file, line = $1, $2, $3, $4
-            file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
-            "<a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{spec}</a>:#{line}<br/>"
-          elsif line =~ /(.*?:)?([\w\_ ]+).*\[([\w\_\/\.]+)\:(\d+)\]/
-            method, file, line = $2, $3, $4
-            file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
-            "<a style=\"color: blue;\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line}\">#{File.basename(file)}</a>:#{line}<br/>"
-          elsif line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors\b.*/
-            "<span style=\"color: #{$1 + $2 == "00" ? "green" : "red"}\">#{$&}</span><br/>"
+      out = ""
+      [str].flatten.each do |line|
+        out << if line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors\b.*/
+          "<span style=\"color: #{$1 + $2 == "00" ? "green" : "red"}\">#{$&}</span><br/>"
+        elsif line =~ /([^\w\/])([\w\.\/\-@]+.rb):(\d+)(.*)/
+          prepend, file, line_number, append = $1, $2, $3, $4
+          file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
+          color, decoration = if ENV['TM_PROJECT_DIRECTORY'].nil? or file.include?(ENV['TM_PROJECT_DIRECTORY'] + '/test')
+            ['blue', 'underline']
           else
-            htmlize(line)
+            ['black', 'none']
           end
-
+          "#{prepend}<a style=\"color: #{color}; text-decoration: #{decoration};\" href=\"txmt://open?url=file://#{e_url(file)}&amp;line=#{line_number}\">#{file}:#{line_number}</a>#{append}<br/>"
         else
-          test_script_buffer << line
-          if end_of_test?(line)
-            test_script_output << format_output(test_script_buffer)
-            test_script_buffer = ''
-          end
-        end
-
-        if last_line?(line)
-          test_script_output
-        else
-          ''
+          htmlize(line)
         end
       end
 
-      out.join
+      out
     else
       htmlize(str)
     end

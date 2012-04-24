@@ -1,3 +1,4 @@
+# encoding: UTF-8
 STDOUT.sync = true
 STDERR.sync = true
 

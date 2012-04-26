@@ -47,7 +47,7 @@ if spork?
   cmd << "-n#{ARGV[1].gsub(/--name=/, '')}"
   script_args = []
 else
-  script_args = ARGV
+  script_args = ARGV + ['-v']
 end
 
 cmd << ENV["TM_FILEPATH"]
@@ -133,6 +133,62 @@ test_script_buffer = ''
 test_script_output = ''
 past_test_run = false #set to true once tests have been completed and now printing the errors/failures
 
+
+class TestResultParser
+  
+  attr_reader :buffer, :in_buffer
+  alias :in_buffer? :in_buffer
+  
+  def initialize
+    @buffer = []
+    @in_buffer = false
+  end
+  
+  def test_result_line?(line)
+    line =~ /^\w+#test:/ || in_buffer?
+  end
+  
+  def process_line(line)    
+    if line =~ /^\w+#test:/
+      @buffer = [line]
+      @in_buffer = true
+    elsif in_buffer?
+      @buffer << line
+    end
+    
+    if line =~ /= [\.EF]$/
+      @in_buffer = false
+      
+      all_lines = buffer.join("\n")      
+      match = all_lines.match(/(.*?(\.  = ))(.*?)([\d\.]+ . = [\.EF])\Z/m)
+      
+      if match
+        test_result = match[1] + match[4]
+        test_puts = match[3]
+                
+      else
+        test_result = all_lines
+      end
+      
+      style = if line =~ /E|F$/
+        'color:red; font-weight:bold;'
+      else
+        'color:green;'
+      end
+      
+      test_has_puts = !(test_puts.nil? || test_puts.strip == "")
+      
+      out = "<div style=\"#{style}padding: 1px 9px 0 9px;#{'background-color: #EFEFEF; border-top-left-radius: 5px; border-top-right-radius: 5px;' if test_has_puts}\">#{test_result}</div>"
+      out << "<div style=\"color: #141414; background-color: #EFEFEF; padding: 2px 9px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; margin-bottom: 5px\">#{test_puts}</div>" if test_has_puts
+      out
+    else
+      ""
+    end
+  end
+end
+
+trp = TestResultParser.new
+
 TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => script_args) do |str, type|  
   case type
   when :out
@@ -140,10 +196,12 @@ TextMate::Executor.run(cmd, :version_args => ["--version"], :script_args => scri
       format_test_result(htmlize(str)) + "<br style=\"display: none\"/>"
     elsif is_test_script
       out = ""
-      [str].flatten.each do |line|
-        out << if line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors\b.*/
+      [str].flatten.each do |line|        
+        out << if trp.test_result_line?(line)
+          trp.process_line(line)
+        elsif line =~ /^\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors\b.*/  # test summary
           "<span style=\"color: #{$1 + $2 == "00" ? "green" : "red"}\">#{$&}</span><br/>"
-        elsif line =~ /([^\w\/])([\w\.\/\-@]+.rb):(\d+)(.*)/
+        elsif line =~ /([^\w\/])([\w\.\/\-@]+.rb):(\d+)(.*)/  # backtrace - provide linkage
           prepend, file, line_number, append = $1, $2, $3, $4
           file = File.join(ENV['TM_PROJECT_DIRECTORY'].to_s, file) unless file =~ /^\//
           color, decoration = if ENV['TM_PROJECT_DIRECTORY'].nil? or file.include?(ENV['TM_PROJECT_DIRECTORY'] + '/test')

@@ -27,9 +27,9 @@ def parse_should_from_quotes(name)
     should_be_part = result[1] if result = name.match(/.*use_should\(?\s*"(.*?)"\)?.*/) || name.match(/.*use_should\(?\s*'(.*?)'\)?.*/) #weird error when trying to match (["']) with \1 in match, so have to do this wet double match
     when_part = result[1] if result = name.match(/.*when\(?\s*"(.*?)"\)?.*/) || name.match(/.*when\(?\s*'(.*?)'\)?.*/)
     with_part = result[1] if result = name.match(/.*with\(?\s*"(.*?)"\)?.*/) || name.match(/.*with\(?\s*'(.*?)'\)?.*/)
+    should_name_parts.push('should', should_be_part) if should_be_part
     should_name_parts.push('when', when_part) if when_part
     should_name_parts.push('with', with_part) if with_part
-    should_name_parts.push('should', should_be_part) if should_be_part
     should_name_parts.shift
 
   elsif name =~ /^\s*should_/

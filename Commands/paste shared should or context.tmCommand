@@ -5,7 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>#!/usr/bin/env ruby -w
+	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 lines = File.readlines(File.join(ENV['TM_BUNDLE_SUPPORT'],'shared_should_context_name.txt'))
 

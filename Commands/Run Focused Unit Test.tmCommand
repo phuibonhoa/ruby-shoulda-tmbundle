@@ -60,15 +60,13 @@ File.open(ENV['TM_FILEPATH']) do |f|
   should_line = lines.detect { |line| line =~ /^\s*(use_)?should/ }
 end
 
-if !should_line.empty?
-  puts "shoulda"
-  
+if !should_line.empty?  
   should = parse_should_from_quotes(should_line)
   indentation_level_of_should = indentation_level(should_line)
   context_line = lines.detect { |line| line =~ /^\s*context\b/ and indentation_level(line) &lt; indentation_level_of_should }
   context = parse_from_quotes(context_line)
   name = "#{context} #{should}".gsub(/[\$\?\+\.\s\'\"\(\)]/,'.?')
-  print "--name=/#{name}/ -v v"
+  print "--name=/#{name}/ -v"
 end
 
 EOF)
